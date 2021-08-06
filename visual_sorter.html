@@ -36,6 +36,8 @@
                 box-shadow: #888 0px 0px 5px inset;
             }
 
+            /* TODO: change button color for buttons that are disabled */
+
             div#sort_container {
                 height: 34px;
                 width: 80%;
@@ -61,6 +63,8 @@
                             width 200ms ease-out, padding 200ms linear, border-radius 200ms linear;
             }
 
+            /* converts row of div.sortable to a column if screen get's resized
+               or if we are on a mobile device */
             @media only screen and (max-width: 1020px) {
                 div#sort_container {
                     width: 90%;
@@ -108,11 +112,17 @@
         </div>
 
         <script>
+            // the width of sorting container. Nine items take up about 1020px 
+            // and instead of coding in a row wrapper I just make it switch to
+            // a column instaed
             const MAX_WIDTH = 1020;
+
 
             window.onload = update_pos;
             window.onresize = update_pos;
 
+            // update_pos adjusts the position of div.sortable items
+            // in accordance with the screen size
             function update_pos(color = undefined) {
                 let items = document.querySelectorAll('div.sortable');
 
@@ -125,20 +135,20 @@
                     // amount of space to shift each cell to the top multipier
                     let top_mult = 45;
 
-                    // Only apply position shift if we are on bigger screen.
-                    // CSS aligns in column instead of
-                    // rows for smaller screens.
+                    // Only apply left position shift if we are on bigger screens.
+                    // CSS aligns in column instead of rows for smaller screens.
                     isSmoll ? (item.style.left = '10%') : (item.style.left = (i * left_mult) + 'px')
                     !isSmoll ? (item.style.top = '0px') : (item.style.top = (i * top_mult) + 'px')
 
                     // change the color of the item
-                    if (color !== undefined && !(color.r === undefined || color.g == undefined || color.b == undefined)) {
+                    if (color !== undefined && !(color.r === undefined || color.g === undefined || color.b === undefined)) {
                         if (color.a === undefined) color.a = 1.0;
                         let r = color.r,
                             g = color.g,
                             b = color.b,
                             a = color.a;
                         item.style.background = 'rgba(' + r + ', ' + g + ', ' + b + ', 0.8)';
+                        // automatically set the border to a slightly darker color than the one provided
                         item.style.border = '1px solid rgba(' + (r-4) + ', ' + (g-70) + ', ' + (b-45) + ', ' + (a+0.1) + ')';
                     }
                     
@@ -179,6 +189,7 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
 
+            // doesn't seem to be working right
             async function selection_sort() {
                 toggle_buttons();
 
@@ -212,28 +223,35 @@
             }
 
             // sorts the items using the bubble sort algorithm
-            async function bubble_sort() {
+            async function bubble_sort(desc=false) {
                 toggle_buttons();
 
                 let items = document.querySelectorAll('div.sortable');
                 let l = items.length;
                 let swapped = false;
-                do {
+                do { // start sorting and continue to iterate over items until sorted
                     swapped = false;
                     for (let i = 0; i < l-1; i++) {
+                        // values to be sorted (this works for text based items as well)
                         let x = items[i].innerText;
                         let y = items[i+1].innerText;
                         
-                        if (x > y) {
-                            swap_siblings(items[i], items[i+1])
+                        // will sort in ascending or descending order based on passed parameter
+                        if (!desc == (x > y)) {
+                            swap_siblings(items[i], items[i+1]);
                             swapped = true;
+                            // sleep so our eyes aren't overwhelmed by everything being sorted instantly
                             await sleep(750);   // min sleep time is equal to last timeout in swap_siblings
                         }
 
                         update_pos();
+                        // idk if this is needed or if the DOM will update items automatically
+                        // but I wanted to make sure items was updated after we rearranged DOM elements
                         items = document.querySelectorAll('div.sortable');
                     }
                 } while (swapped);
+                // changes the color of div.sortable items to a shade
+                // of green to signify that we're done sorting
                 update_pos({
                     r: 42,
                     g: 198,
@@ -243,6 +261,8 @@
                 toggle_buttons();
             }
 
+            // toggle_buttons prevents the end user from starting the sort process
+            // multiple times before the previous one finishes
             function toggle_buttons() {
                 document.querySelectorAll('div#button_container button').forEach(item => item.disabled = !item.disabled);
             }
