@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang = "en-US" dir = "ltr">
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width,initial-scale=1.0">
+        <title> Algorithm Visualizer </title>
+
+        <style>
+            div#button_container {
+                width: 80%;
+                min-width: 480px;
+                max-width: 1200px;
+                margin: 10px auto;
+                border: 1px solid #e3e3e3;
+                border-radius: 2px;
+                background: #eee;
+            }
+
+            button {
+                background: #222;
+                color: white;
+                border: none;
+                border-radius: 2px;
+                padding: 10px 20px;
+                font-size: 11.5pt;
+                cursor: pointer;
+                transition: background 70ms ease-out, color 70ms ease-out;
+            }
+            
+            button:hover {
+                background: #ddf;
+                color: #224;
+            }
+
+            button:active {
+                box-shadow: #888 0px 0px 5px inset;
+            }
+
+            /* TODO: change button color for buttons that are disabled */
+
+            div#sort_container {
+                height: 34px;
+                width: 80%;
+                min-width: 480px;
+                max-width: 1200px;
+                margin: 10px auto;
+                border: 1px solid #e3e3e3;
+                border-radius: 10px;
+                background: #eee;
+                position: relative;
+            }
+
+            div.sortable {
+                border: 1px solid rgba(255, 150, 200, 0.9);
+                position: absolute;
+                border-radius: 9px;
+                padding: 5px 30px;
+                background: rgba(240, 150, 200, 0.8);
+                font: 14pt Calibri Serif;
+                text-align: center;
+                width: 20px;
+                transition: top 350ms ease-out, left 350ms ease-out, background 100ms ease,
+                            width 200ms ease-out, padding 200ms linear, border-radius 200ms linear;
+            }
+
+            /* converts row of div.sortable to a column if screen get's resized
+               or if we are on a mobile device */
+            @media only screen and (max-width: 1020px) {
+                div#sort_container {
+                    width: 90%;
+                    max-width: initial;
+                    min-width: initial;
+                    background: none;
+                    border: none;
+                }
+                
+                div.sortable {
+                    display: block;
+                    width: 80%;
+                    padding: 7px 0;
+                    border-radius: 30px;
+                    left: 10%;
+                }
+            }
+        </style>
+
+        <script src = "alorithms.js"></script>
+        <script src = "main.js"></script>
+    </head>
+    <body>
+        <div id = "button_container">
+            <button onclick = "bubble_sort();">
+                Bubble Sort<br>
+                <span style = "font-size: 9pt;">
+                    &Omega;(n) | &theta;(n^2) | O(n^2)
+                </span>
+            </button>
+            <button onclick = "selection_sort();">
+                Selection Sort<br>
+                <span style = "font-size: 9pt;">
+                    &Omega;(n^2) | &theta;(n^2) | O(n^2)
+                </span>
+            </button>
+        </div>
+        <div id = "button_container">
+            <button onclick = "linear_search(8);">
+                Linear Search<br>
+                <span style = "font-size: 9pt;">
+                    &Omega;(n) | &theta;(n) | O(n)
+                </span>
+            </button>
+        </div>
+        <div id = "sort_container">
+            <div class = "sortable">03</div>
+            <div class = "sortable">04</div>
+            <div class = "sortable">06</div>
+            <div class = "sortable">09</div>
+            <div class = "sortable">05</div>
+            <div class = "sortable">08</div>
+            <div class = "sortable">02</div>
+            <div class = "sortable">01</div>
+            <div class = "sortable">07</div>
+        </div>
+    </body>
+</html>
