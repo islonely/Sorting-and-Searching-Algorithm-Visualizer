@@ -13,7 +13,7 @@ A way to observe what an algorithm is doing for a better understanding of how it
 - [ ] Radix Sort
 
 **SEARCHING**
-- [ ] Linear Search
+- [x] Linear Search
 - [ ] Binary Search
 - [ ] Jump Search
 - [ ] Interpolation Search
